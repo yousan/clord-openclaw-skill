@@ -5,7 +5,10 @@
 1. Use Python 3.10+ on Linux or macOS; the receipt lock uses `fcntl`. No pip dependencies.
 2. Initialize C-lord for the intended Discord text channel using the deployment's documented procedure (`/clord-init repo:...` where applicable). This CLI does not initialize channels, install C-lord, create webhooks, or infer other channels.
 3. Prepare an existing incoming webhook for each allowed channel. The configured C-lord bot token must be able to read those channels/threads and list existing webhooks. Set the exact webhook ID when multiple hooks exist. Ask before creating a new webhook; this CLI never creates one.
-4. Copy the repository's `examples/config.example.json` outside the checkout to `~/.config/clord-dispatch/config.json`; set real IDs/repo. Keep that file private (`chmod 600`). Set `CLORD_DISPATCH_CONFIG` to use another path.
+4. Copy the repository's `examples/config.example.json` outside the checkout and set real IDs/repo. Keep that file private (`chmod 600`). The default path is chosen in this order:
+   1. `CLORD_DISPATCH_CONFIG`, if set.
+   2. When the skill is installed under `~/.openclaw-<profile>/` (one OpenClaw profile per agent): `~/.config/clord-dispatch/<profile>.json`. Give each agent only the routes it may use. If that file is missing, the CLI stops; it does not fall back to another agent's config.
+   3. Otherwise `~/.config/clord-dispatch/config.json`.
 5. Set the named token environment variable on the gateway process. Alternatively, a private `bot_token_env_file` config field may reference an existing file with `KEY=value` lines; `bot_token_env` is also the key to read from it. This is a small parser, not shell execution; do not use variable expansion. Never place tokens, webhook token URLs, or real private config in this repository.
 6. Install the `skills/clord-dispatch` directory under the intended agent's `<workspace>/skills/clord-dispatch`. Copy the complete directory, not just SKILL.md. Keep installed files matched to one source commit. This does not change other agents' skill directories or require a gateway restart in versions with skill refresh.
 

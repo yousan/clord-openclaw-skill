@@ -15,7 +15,23 @@ from contextlib import contextmanager
 from pathlib import Path
 
 API = 'https://discord.com/api/v10'
-CONFIG = Path(os.environ.get('CLORD_DISPATCH_CONFIG', '~/.config/clord-dispatch/config.json')).expanduser()
+def default_config(env=None, here=None):
+    """Env var first; else a per-profile file when installed under ~/.openclaw-<profile>/.
+
+    The per-profile path is returned even if missing, so a profile without its own
+    routes fails closed instead of falling back to another agent's shared config.
+    """
+    env = os.environ if env is None else env
+    if env.get('CLORD_DISPATCH_CONFIG'):
+        return Path(env['CLORD_DISPATCH_CONFIG']).expanduser()
+    for parent in Path(here or __file__).resolve().parents:
+        m = re.fullmatch(r'\.openclaw-([A-Za-z0-9_-]+)', parent.name)
+        if m:
+            return Path(f'~/.config/clord-dispatch/{m.group(1)}.json').expanduser()
+    return Path('~/.config/clord-dispatch/config.json').expanduser()
+
+
+CONFIG = default_config()
 
 
 class DispatchError(Exception):

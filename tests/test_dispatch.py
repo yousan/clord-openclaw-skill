@@ -38,6 +38,17 @@ class DispatchTests(unittest.TestCase):
         with self.assertRaises(d.DispatchError):
             d.route({'routes': {'demo': {}}}, 'other-project')
 
+    def test_config_is_per_profile_and_env_wins(self):
+        here = '/home/u/.openclaw-vera/workspace/skills/clord-dispatch/scripts/dispatch.py'
+        self.assertEqual(d.default_config({}, here).name, 'vera.json')
+        self.assertEqual(d.default_config({}, '/opt/skills/clord-dispatch/scripts/dispatch.py').name, 'config.json')
+        self.assertEqual(str(d.default_config({'CLORD_DISPATCH_CONFIG': '/x/y.json'}, here)), '/x/y.json')
+
+    def test_missing_profile_config_does_not_fall_back(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaises(d.DispatchError):
+                d.load_config(Path(tmp) / 'vera.json')
+
     def test_body_does_not_accept_handwritten_prefix(self):
         with self.assertRaises(d.DispatchError):
             d.payload('https://github.com/a/b', '!clord do a task', 'key')
