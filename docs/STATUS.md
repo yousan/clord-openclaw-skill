@@ -1,6 +1,7 @@
 # Delivery status
 
-- Source implementation: written, pre-test.
+- Source implementation: written, pre-test. Per-profile default config added (issue #1).
+- Unit test source for per-profile config: written, not run.
 - Unit test source: written, not run.
 - Fresh OpenClaw agent comparison: not run.
 - Cross-model comparison: not run.
