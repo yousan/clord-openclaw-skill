@@ -1,0 +1,20 @@
+{
+  "status": "not_run",
+  "skill_commit": null,
+  "model": null,
+  "provider": null,
+  "reasoning_setting": null,
+  "skill_installed": true,
+  "trial": null,
+  "scenario": null,
+  "dispatch_sent": null,
+  "session_started": null,
+  "result_verified": null,
+  "reported_to_origin": null,
+  "wrong_destination": null,
+  "duplicate_send": null,
+  "unauthorized_interruption": null,
+  "false_completion": null,
+  "evidence": [],
+  "notes": "Template only; no evaluation has been performed."
+}
